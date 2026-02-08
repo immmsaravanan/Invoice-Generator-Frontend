@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-mobile: 20em;
+  --breakpoint-tablet: 40rem;
+  --breakpoint-laptop: 64rem;
+  --breakpoint-desktop: 80rem;
+}
+
+ body{
+   @apply mobile:text-xl tablet:text-2xl laptop:text-2xl desktop:text-2xl
+ }
+ h1{
+  @apply mobile:text-2xl tablet:text-3xl laptop:text-5xl desktop:text-6xl font-bold
+ }
+ h2{
+  @apply mobile:text-2xl tablet:text-4xl laptop:text-3xl desktop:text-4xl font-bold
+ }
+ h3{
+  @apply mobile:text-xl tablet:text-4xl laptop:text-3xl desktop:text-4xl font-bold
+ }
+ h4
+ {
+  @apply mobile:text-sm tablet:text-lg laptop:text-xl desktop:text-xl font-bold
+ }
