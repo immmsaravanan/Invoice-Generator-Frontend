@@ -2,12 +2,12 @@ import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 export default function  ClientEdit(props)
 {
-const [response,err] = useFetch("/api/client/edit")
+const [response,err] = useFetch("/api/client/address/edit")
 const [Address1,SetAddress1] = useState(props.data.address_line1 || "")
 const [Address2,SetAddress2] = useState(props.data.address_line2 || "")
 const [Address3,SetAddress3] = useState(props.data.address_line3 || "")
 const [State,setState] = useState(props.data.state || "")
-const [Code,setCode] = useState(props.state_code || "")
+const [Code,setCode] = useState(props.data.state_code || "")
 const [Message,setMessage] = useState()
 function ChangeHandler(e,setState)
 {
@@ -59,7 +59,7 @@ return(
                                                         <br />
                                                         {Message && <div className="text-lg text-red-600">{Message}</div>}
                                                         <button className="bg-blue-600 text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-blue-500 hover:scale-110 ease-in-out hover:duration-300" type="submit">Confirm</button>
-                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300">Cancel</button>
+                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300" onClick={()=>props.visible({status:false})}>Cancel</button>
                                                 </form>
                                         </div>
                                         </>
