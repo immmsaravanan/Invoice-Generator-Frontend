@@ -26,9 +26,14 @@ async function HandleSubmit() {
                         console.log(err)
                 }
                 if (result.message)
+                {
                         setMessage(result.message)
+                        setConfirmation(false)
+                }
                 else
+                {
                         setMessage("")
+                }
                 if(result.err)
                     console.log(result.err)
                 if(result.status)

@@ -42,9 +42,14 @@ export default function Client() {
                         console.log(err)
                 }
                 if (result.message)
+                {
                         setMessage(result.message)
+                        setConfirmation(false)
+                }
                 else
+                {
                         setMessage("")
+                }
                 if (result.status)
                         setaddClients(false)
                         setConfirmation(false)
