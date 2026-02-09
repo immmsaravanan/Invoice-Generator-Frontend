@@ -11,7 +11,6 @@ export default function ClientEdit(props)
         e.preventDefault()
         const Data = {GSTIN:props.client_gstin,client_name:NewClientName,client_gstin:NewClientGSTIN}
         const result = await response(Data)
-        console.log(result)
         if(response)
         {
         if(result.status)

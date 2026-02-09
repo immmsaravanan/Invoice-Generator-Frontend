@@ -49,7 +49,7 @@ export default function AddressCard()
         {!Data.client_addresses?.length && <div className="text-center text-gray-400 mt-5">No Clients Addressess are found</div>}
         {Data.client_addresses && Data?.client_addresses?.map((item,index)=>{
             return(
-                <div key={index}>
+            <div key={index}>
             <div className="bg-gray-200 p-5 mt-5 rounded-3xl">
             <h3>Address {index +1}:</h3>
             <br />

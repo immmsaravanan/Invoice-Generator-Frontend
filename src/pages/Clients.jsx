@@ -3,9 +3,12 @@ import Dashboard from "../components/Dashboard";
 import useFetch from "../hooks/useFetch";
 import useGet from "../hooks/useGet";
 import ClientCard from "../components/ClientCard.jsx";
-
+import ConfirmationBox from "../components/ConfirmationBox.jsx";
 
 export default function Client() {
+        const [Confirmation,setConfirmation] = useState()
+        const [ConfirmationBoxMessage,setConfirmationBoxMessgae] = useState()
+        const [ConfirmationBoxFunction,setConfirmationBoxFunction] =useState(()=>{})
         const [response, err] = useFetch("/api/client/add")
         const [addClients, setaddClients] = useState(false)
         const [editClient,seteditClient] = useState(false)
@@ -26,15 +29,13 @@ export default function Client() {
                         fetch()
         }, [fetchClients,Fetcherr,addClients,err,HideAll])
         async function HandleSubmit(e) {
-                e.preventDefault()
-                const Form = new FormData(e.target)
-                const CompanyName = Form.get("ClientName")
-                const GSTIN = Form.get("ClientGSTIN")
-                const Address1 = Form.get("Address1")
-                const Address2 = Form.get("Address2")
-                const Address3 = Form.get("Address3")
-                const State = Form.get("State")
-                const Code = Form.get("Code")
+                const CompanyName = e.ClientName
+                const GSTIN = e.ClientGSTIN
+                const Address1 = e.Address1
+                const Address2 = e.Address2
+                const Address3 = e.Address3
+                const State = e.State
+                const Code = e.Code
                 const Data = { name: CompanyName, GSTIN: GSTIN, AddressLine1: Address1, AddressLine2: Address2, AddressLine3: Address3, state: State, code: Code }
                 const result = await response(Data)
                 if (err) {
@@ -46,15 +47,24 @@ export default function Client() {
                         setMessage("")
                 if (result.status)
                         setaddClients(false)
+                        setConfirmation(false)
         }
         return (
                 <>
                         <div className="h-screen grid grid-cols">
                                 <Dashboard active="clients">
+                                        {Confirmation && <ConfirmationBox message={ConfirmationBoxMessage} execute={ConfirmationBoxFunction} setHide={setConfirmation}/>}
                                         {!HideAll && <div>
                                         {!addClients && <button className="bg-blue-700 p-3 rounded-3xl w-50 text-white hover:bg-blue-800 cursor-pointer transition-transform duration-400 hover:scale-110" onClick={() => { setaddClients(true) }}>Add Client</button>}
                                         {addClients && <div className="bg-gray-200 h-230 w-full p-10 rounded-3xl">
-                                                <form onSubmit={(e) => HandleSubmit(e)}>
+                                                <form onSubmit={(e) =>{
+                                                        e.preventDefault()
+                                                        const formData = new FormData(e.currentTarget)
+                                                        const dataObject = Object.fromEntries(formData.entries())
+                                                        setConfirmationBoxMessgae("Are you sure you want to save the client information")
+                                                        setConfirmationBoxFunction( ()=>()=>{HandleSubmit(dataObject)})
+                                                        setConfirmation(true)
+                                                        }}>
                                                         <h3 className="">Add Client Details</h3>
                                                         <br />
                                                         Client Name:
@@ -74,7 +84,7 @@ export default function Client() {
                                                         <br />
                                                         {Message && <div className="text-lg text-red-600">{Message}</div>}
                                                         <button className="bg-blue-600 text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-blue-500 hover:scale-110 ease-in-out hover:duration-300" type="submit">Submit</button>
-                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300" onClick={() => { setaddClients(false) }}>Cancel</button>
+                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300" onClick={() =>{ setaddClients(false) }}>Cancel</button>
                                                 </form>
                                         </div>}
                                 { !Clients && <div className="text-center text-gray-400 mt-5">No Clients are found</div>}
