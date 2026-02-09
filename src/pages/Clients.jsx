@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
 import useFetch from "../hooks/useFetch";
-import { Navigate } from "react-router-dom";
 import useGet from "../hooks/useGet";
 import ClientCard from "../components/ClientCard.jsx";
 
 
 export default function Client() {
-        const [response, err] = useFetch("/api/add/client")
+        const [response, err] = useFetch("/api/client/add")
         const [addClients, setaddClients] = useState(false)
         const [Message, setMessage] = useState("")
-        const [Clients, setClients] = useState()
+        const [Clients, setClients] = useState([])
         const [fetchClients, Fetcherr] = useGet("/api/clients")
          useEffect(() => {
                         async function fetch() {
@@ -32,8 +31,8 @@ export default function Client() {
         async function HandleSubmitSignup(e) {
                 e.preventDefault()
                 const Form = new FormData(e.target)
-                const CompanyName = Form.get("CompanyName")
-                const GSTIN = Form.get("GSTIN")
+                const CompanyName = Form.get("ClientName")
+                const GSTIN = Form.get("ClientGSTIN")
                 const Address1 = Form.get("Address1")
                 const Address2 = Form.get("Address2")
                 const Address3 = Form.get("Address3")
@@ -62,10 +61,10 @@ export default function Client() {
                                                 <form onSubmit={(e) => HandleSubmitSignup(e)}>
                                                         <h3 className="">Add Client Details</h3>
                                                         <br />
-                                                        Company Name:
-                                                        <input type="text" name="CompanyName" className="border-2  border-gray-400 rounded-3xl  laptop:text-2xl mobile:w-full h-10  p-6  hover:border-black mb-4" required />
+                                                        Client Name:
+                                                        <input type="text" name="ClientName" className="border-2  border-gray-400 rounded-3xl  laptop:text-2xl mobile:w-full h-10  p-6  hover:border-black mb-4" required />
                                                         GSTIN:
-                                                        <input type="text" name="GSTIN" className="border-2  border-gray-400 rounded-3xl  laptop:text-2xl mobile:w-full h-10  p-6  hover:border-black mb-4" required />
+                                                        <input type="text" name="ClientGSTIN" className="border-2  border-gray-400 rounded-3xl  laptop:text-2xl mobile:w-full h-10  p-6  hover:border-black mb-4" required />
                                                         Address Line 1 (Optional):
                                                         <input type="text" name="Address1" className="border-2  border-gray-400 rounded-3xl  laptop:text-2xl mobile:w-full h-10  p-6  hover:border-black mb-4" />
                                                         Address Line 2 (Optional):
@@ -84,7 +83,7 @@ export default function Client() {
                                         </div>}
                                 { !Clients && <div className="text-center text-gray-400 mt-5">No Clients are found</div>}
                                 </div> }
-                                                                {!addClients && Clients && <div>{Clients.map((item,index)=>{
+                                                                {!addClients && Clients && <div>{Clients?.map((item,index)=>{
                                         return(
                                         <ClientCard key={index} name={item.client_name} gstin={item.client_gstin} onView={HandleView} View ={HideAll} addresses={item.client_addresses}/>
                                         )

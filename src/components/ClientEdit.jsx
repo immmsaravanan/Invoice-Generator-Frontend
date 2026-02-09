@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { ClientData } from "../contexts/Contexts.mjs";
-import useGet from "../hooks/useGet";
+import useFetch from "../hooks/useFetch";
 export default function  ClientEdit(props)
 {
-const [response,err]= useGet("/api/client/edit")
+const [response,err] = useFetch("/api/client/edit")
 const Data = useContext(ClientData)
 const [Address1,SetAddress1] = useState(props.data.address_line1 || "")
 const [Address2,SetAddress2] = useState(props.data.address_line2 || "")
@@ -16,17 +16,18 @@ function ChangeHandler(e,setState)
     const value = e.target.value
     setState(value)
 }
-async function HandleSubmitSignup(e) {
+async function HandleSubmit(e) {
                 e.preventDefault()
                 const Form = new FormData(e.target)
-                const CompanyName = Form.get("CompanyName")
-                const GSTIN = Form.get("GSTIN")
+                const CLientName = props.clientdata.name
+                const ClientGSTIN = props.clientdata.gstin
+                console.log(props.clientdata)
                 const Address1 = Form.get("Address1")
                 const Address2 = Form.get("Address2")
                 const Address3 = Form.get("Address3")
                 const State = Form.get("State")
                 const Code = Form.get("Code")
-                const Data = { name: CompanyName, GSTIN: GSTIN, AddressLine1: Address1, AddressLine2: Address2, AddressLine3: Address3, state: State, code: Code }
+                const Data = { name: CLientName, GSTIN: ClientGSTIN, AddressLine1: Address1, AddressLine2: Address2, AddressLine3: Address3, state: State, code: Code, index:props.index }
                 const result = await response(Data)
                 if (err) {
                         console.log(err)
@@ -35,12 +36,14 @@ async function HandleSubmitSignup(e) {
                         setMessage(result.message)
                 else
                         setMessage("")
+                if(result.err)
+                    console.log(result.err)
             }
 return(
     <>
     <br />
     <div className="bg-gray-200 h-230 w-full p-10 rounded-3xl">
-                                                <form onSubmit={(e) => HandleSubmitSignup(e)}>
+                                                <form onSubmit={(e) => HandleSubmit(e)}>
                                                         <h3 className="">Edit Client Details</h3>
                                                         <br />
                                                         Address Line 1 (Optional):

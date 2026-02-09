@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState,useCallback } from "react";
 
 export default  function useFetch(url)
 {
 const [Err,setErr]= useState()
-const get = async(body)=>
+const get =useCallback(async(body)=>
 {
 let res;
 try{
@@ -23,6 +23,7 @@ setErr(e)
 const response= await res.json()
 return response
 }
+,[url])
 return [get,Err]
 
 }

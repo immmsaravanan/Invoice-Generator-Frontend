@@ -28,7 +28,7 @@ export default function AddressCard()
             )
         })}
         </div>}
-        {Edit.status && <ClientEdit data={Edit.data} index={Edit.index} visible ={setEdit} />}
+        {Edit.status && <ClientEdit key={Edit.index} data={Edit.data} index={Edit.index} visible ={setEdit} clientdata ={Data}/>}
         </>
     )
 }
