@@ -1,7 +1,7 @@
 export default function ConfirmationBox(props){
 return(
 <>
-{props.execute && <div className="w-full relative">
+{props.execute && <div className="w-full relative flex justify-center">
 <div className="w-full h-100 p-10 fixed flex justify-center">
 <div className="bg-cyan-100 h-120 z-10 p-20 mt-10 w-150 rounded-3xl ">
 <h4>{props.message}</h4>
