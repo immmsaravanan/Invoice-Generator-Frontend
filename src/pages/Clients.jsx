@@ -9,20 +9,20 @@ export default function Client() {
         const [response, err] = useFetch("/api/client/add")
         const [addClients, setaddClients] = useState(false)
         const [Message, setMessage] = useState("")
-        const [Clients, setClients] = useState([])
+        const [Clients, setClients] = useState()
         const [fetchClients, Fetcherr] = useGet("/api/clients")
          useEffect(() => {
                         async function fetch() {
                                 if (Fetcherr)
                                         console.log(Fetcherr)
                                 const response =await fetchClients()
-                                if (response)
-                                        return setClients(response)
-                                else 
-                                        return null
+                                if (response.status)
+                                        setClients(response.data)
+                                if(response.err)
+                                        console.log(err)
                         }
                         fetch()
-        }, [fetchClients,Fetcherr,addClients])
+        }, [fetchClients,Fetcherr,addClients,err])
         const [HideAll,setHideAll] = useState(false)
         async function HandleView()
         {
@@ -50,7 +50,6 @@ export default function Client() {
                 if (result.status)
                         setaddClients(false)
         }
-
         return (
                 <>
                         <div className="h-screen grid grid-cols">
@@ -85,7 +84,7 @@ export default function Client() {
                                 </div> }
                                                                 {!addClients && Clients && <div>{Clients?.map((item,index)=>{
                                         return(
-                                        <ClientCard key={index} name={item.client_name} gstin={item.client_gstin} onView={HandleView} View ={HideAll} addresses={item.client_addresses}/>
+                                        <ClientCard key={index} index={index} name={item.client_name} gstin={item.client_gstin} onView={HandleView} View ={HideAll} addresses={item.client_addresses}/>
                                         )
                                 })}</div>}
                                 </Dashboard>

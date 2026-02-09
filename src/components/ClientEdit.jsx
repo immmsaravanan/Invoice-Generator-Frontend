@@ -1,15 +1,13 @@
-import { useContext, useState } from "react";
-import { ClientData } from "../contexts/Contexts.mjs";
+import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 export default function  ClientEdit(props)
 {
 const [response,err] = useFetch("/api/client/edit")
-const Data = useContext(ClientData)
 const [Address1,SetAddress1] = useState(props.data.address_line1 || "")
 const [Address2,SetAddress2] = useState(props.data.address_line2 || "")
 const [Address3,SetAddress3] = useState(props.data.address_line3 || "")
 const [State,setState] = useState(props.data.state || "")
-const [Code,setCode] = useState(props.code || "")
+const [Code,setCode] = useState(props.state_code || "")
 const [Message,setMessage] = useState()
 function ChangeHandler(e,setState)
 {
@@ -19,8 +17,8 @@ function ChangeHandler(e,setState)
 async function HandleSubmit(e) {
                 e.preventDefault()
                 const Form = new FormData(e.target)
-                const CLientName = props.clientdata.name
-                const ClientGSTIN = props.clientdata.gstin
+                const CLientName = props.clientdata.client_name
+                const ClientGSTIN = props.clientdata.client_gstin
                 console.log(props.clientdata)
                 const Address1 = Form.get("Address1")
                 const Address2 = Form.get("Address2")
@@ -38,6 +36,8 @@ async function HandleSubmit(e) {
                         setMessage("")
                 if(result.err)
                     console.log(result.err)
+                if(result.status)
+                        props.visible(false)
             }
 return(
     <>

@@ -1,23 +1,23 @@
 import { useState } from "react"
 import { ClientData } from "../contexts/Contexts.mjs";
 import AddressCard from "./AddressCard";
-export default function ClientCard(prams)
+export default function ClientCard(props)
 {
 const [View,setView] = useState(false)    
-const Data = {name:prams.name,gstin:prams.gstin,addresses:prams.addresses}
+const Data = {client_name:props.name,client_gstin:props.gstin,index:props.index}
     return(
         <>
-{!prams.View && <div className="bg-gray-200 p-5 mt-5 rounded-3xl">
-<h3>{prams.name}</h3>
-<h4 className="inline">GSTIN:</h4>{prams.gstin} <br /><br />
-<button className="bg-blue-600 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-blue-500 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>{prams.onView();setView(true)}}>View</button>
+{!props.View && <div className="bg-gray-200 p-5 mt-5 rounded-3xl">
+<h3>{props.name}</h3>
+<h4 className="inline">GSTIN:</h4>{props.gstin} <br /><br />
+<button className="bg-blue-600 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-blue-500 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>{props.onView();setView(true)}}>View</button>
 <button className="bg-green-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-green-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Bills</button>
 <button className="bg-violet-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-violet-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Make Invoice</button>
 <button className="bg-cyan-400 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-cyan-500 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Edit</button>
 <button className="bg-amber-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-amber-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Add Address</button>
 <button className="bg-red-600 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-red-700 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Delete</button> 
 </div>}
-{View && <ClientData.Provider value={Data}><AddressCard /></ClientData.Provider> }
+{View && <ClientData.Provider value={Data}><AddressCard key={props.index} /></ClientData.Provider> }
 
  </>
     )
