@@ -8,8 +8,10 @@ import ClientCard from "../components/ClientCard.jsx";
 export default function Client() {
         const [response, err] = useFetch("/api/client/add")
         const [addClients, setaddClients] = useState(false)
+        const [editClient,seteditClient] = useState(false)
         const [Message, setMessage] = useState("")
         const [Clients, setClients] = useState()
+        const [HideAll,setHideAll] = useState(false)
         const [fetchClients, Fetcherr] = useGet("/api/clients")
          useEffect(() => {
                         async function fetch() {
@@ -22,13 +24,8 @@ export default function Client() {
                                         console.log(err)
                         }
                         fetch()
-        }, [fetchClients,Fetcherr,addClients,err])
-        const [HideAll,setHideAll] = useState(false)
-        async function HandleView()
-        {
-                setHideAll(true)
-        }
-        async function HandleSubmitSignup(e) {
+        }, [fetchClients,Fetcherr,addClients,err,HideAll])
+        async function HandleSubmit(e) {
                 e.preventDefault()
                 const Form = new FormData(e.target)
                 const CompanyName = Form.get("ClientName")
@@ -57,7 +54,7 @@ export default function Client() {
                                         {!HideAll && <div>
                                         {!addClients && <button className="bg-blue-700 p-3 rounded-3xl w-50 text-white hover:bg-blue-800 cursor-pointer transition-transform duration-400 hover:scale-110" onClick={() => { setaddClients(true) }}>Add Client</button>}
                                         {addClients && <div className="bg-gray-200 h-230 w-full p-10 rounded-3xl">
-                                                <form onSubmit={(e) => HandleSubmitSignup(e)}>
+                                                <form onSubmit={(e) => HandleSubmit(e)}>
                                                         <h3 className="">Add Client Details</h3>
                                                         <br />
                                                         Client Name:
@@ -84,7 +81,7 @@ export default function Client() {
                                 </div> }
                                                                 {!addClients && Clients && <div>{Clients?.map((item,index)=>{
                                         return(
-                                        <ClientCard key={index} index={index} name={item.client_name} gstin={item.client_gstin} onView={HandleView} View ={HideAll} addresses={item.client_addresses}/>
+                                        <ClientCard key={index} index={index} name={item.client_name} gstin={item.client_gstin} onView={setHideAll} onEdit={seteditClient} edit={editClient} View ={HideAll} addresses={item.client_addresses}/>
                                         )
                                 })}</div>}
                                 </Dashboard>

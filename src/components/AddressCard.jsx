@@ -1,6 +1,6 @@
 import { useContext,useEffect,useState } from "react"
 import useDelete from "../hooks/useDelete"
-import ClientEdit from "./ClientEdit"
+import ClientAddressEdit from "./ClientAddressEdit"
 import { ClientData } from "../contexts/Contexts.mjs"
 import useFetch from "../hooks/useFetch"
 export default function AddressCard()
@@ -67,7 +67,7 @@ export default function AddressCard()
             )
         })}
         </div>}
-        {Edit.status && <ClientEdit data={Edit.data} index={Edit.index} visible ={setEdit} clientdata ={Data}/>}
+        {Edit.status && <ClientAddressEdit data={Edit.data} index={Edit.index} visible ={setEdit} clientdata ={Data}/>}
         </>
     )
 }
