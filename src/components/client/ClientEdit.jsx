@@ -1,6 +1,6 @@
 import { useState } from "react"
-import useFetch from "../hooks/useFetch"
-import ConfirmationBox from "./ConfirmationBox"
+import useFetch from "../../hooks/useFetch"
+import ConfirmationBox from "../ConfirmationBox"
 export default function ClientEdit(props)
 {
     const [Confirmation,setConfirmation]  = useState(false)

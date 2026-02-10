@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
 import useFetch from "../hooks/useFetch";
 import useGet from "../hooks/useGet";
-import ClientCard from "../components/ClientCard.jsx";
+import ClientCard from "../components/client/ClientCard.jsx";
 import ConfirmationBox from "../components/ConfirmationBox.jsx";
+import useDelete from "../hooks/useDelete.jsx";
 
 export default function Client() {
         const [Confirmation,setConfirmation] = useState()
+        const [DeleteResponse,DeleteErr]=useDelete("/api/client/delete")
+        const [DeleteStatus,setDeleteStatus] =useState("")
         const [ConfirmationBoxMessage,setConfirmationBoxMessgae] = useState()
         const [ConfirmationBoxFunction,setConfirmationBoxFunction] =useState(()=>{})
         const [response, err] = useFetch("/api/client/add")
@@ -27,7 +30,7 @@ export default function Client() {
                                         console.log(err)
                         }
                         fetch()
-        }, [fetchClients,Fetcherr,addClients,err,HideAll])
+        }, [fetchClients,Fetcherr,addClients,err,HideAll,DeleteStatus])
         async function HandleSubmit(e) {
                 const CompanyName = e.ClientName
                 const GSTIN = e.ClientGSTIN
@@ -54,6 +57,21 @@ export default function Client() {
                         setaddClients(false)
                         setConfirmation(false)
         }
+
+        async function handleDelete(name,body) {
+                const response = await DeleteResponse(body)
+                if (response) {
+                    if (response.status) {
+                        setConfirmation(false)
+                    }
+                      setDeleteStatus(!DeleteStatus)
+                    if (response.err)
+                        console.log(response.err)
+                }
+                if (DeleteErr)
+                    console.log(DeleteErr)
+            }
+        
         return (
                 <>
                         <div className="h-screen grid grid-cols">
@@ -94,9 +112,9 @@ export default function Client() {
                                         </div>}
                                 { !Clients && <div className="text-center text-gray-400 mt-5">No Clients are found</div>}
                                 </div> }
-                                                                {!addClients && Clients && <div>{Clients?.map((item,index)=>{
+                                {!addClients && Clients && <div>{Clients?.map((item,index)=>{
                                         return(
-                                        <ClientCard key={index} index={index} name={item.client_name} gstin={item.client_gstin} onView={setHideAll} onEdit={seteditClient} edit={editClient} View ={HideAll} addresses={item.client_addresses}/>
+                                        <ClientCard key={index} index={index} name={item.client_name} gstin={item.client_gstin} onView={setHideAll} onEdit={seteditClient} edit={editClient} View ={HideAll} addresses={item.client_addresses} deleteclient={()=>{setConfirmation(true);setConfirmationBoxMessgae("Are you sure you want to delete client "+item.client_name+"?");setConfirmationBoxFunction(()=>()=>handleDelete(item.client_name,{client_gstin:item.client_gstin}))}}/>
                                         )
                                 })}</div>}
                                 </Dashboard>
