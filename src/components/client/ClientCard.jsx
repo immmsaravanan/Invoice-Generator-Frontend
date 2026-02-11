@@ -9,7 +9,7 @@ const [View,setView] = useState(false)
 const [Edit,setEdit] =useState(false)   
 const [Add,setAdd] = useState(false)
 
-const Data = {client_name:props.name,client_gstin:props.gstin,index:props.index}
+const Data = {client_name:props.name,client_gstin:props.gstin,index:props.index,setView:setView,onView:props.onView}
 
     return(
         <>

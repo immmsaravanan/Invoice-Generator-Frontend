@@ -44,6 +44,7 @@ export default function AddressCard() {
     return (
         <>
             {Confirmation && <ConfirmationBox message={"Are you sure you want to Delete this?"} execute={ConfirmationBoxFunction} setHide={setConfirmation} />}
+            <button onClick={()=>{clientdata?.setView(false);clientdata?.onView(false)}}><img src="../../../assets/images/back_arrow.png" className="h-10 w-10" /></button>
             <h3>{Data.client_name} </h3>
             <h4 className="inline">GSTIN:</h4>{Data.client_gstin} <br />
             {!Add && !Edit.status && <button className="bg-blue-600 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-blue-700 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>setAdd(true)}>Add Address</button>}
