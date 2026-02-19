@@ -1,15 +1,34 @@
 import { useState,useEffect } from "react"
-import useFetch from "../hooks/useFetch"
-import { Navigate,useNavigate } from "react-router-dom"
+import useFetch from "../hooks/usePost"
+import { Navigate,useNavigate,useLocation,Outlet } from "react-router-dom"
 import { BiUser } from "react-icons/bi"
 import { BiMenu } from "react-icons/bi"
 
-export default function Dashboard({children,active})
+export default function Dashboard()
 {
+    const url = useLocation();
     const navigate = useNavigate()
     const [Menu,setMenu]= useState()
     const [Logged,setLogged]= useState(true)
     const [LoggedPost,err]= useFetch("/api/loggedin")
+
+    //Find The Active Page
+    function FindActive(url)
+    {
+      const PathName = url.pathname
+      if(PathName.startsWith("/clients") ||PathName.startsWith("/client"))
+        return "clients"
+      else if(PathName.startsWith("/stock"))
+        return "stock"
+      else if(PathName.startsWith("/invoices") || PathName.startsWith("/invoices"))
+        return "invoices"
+      else if(PathName.startsWith("/reports") || PathName.startsWith("/reports"))
+        return "reports"
+      else if(PathName.startsWith("/payments") || PathName.startsWith("/payments"))
+        return "payments"
+    }
+    //active status
+    const active = FindActive(url)
     useEffect(()=>
     {
         async function fetch()
@@ -17,12 +36,11 @@ export default function Dashboard({children,active})
         const Login = await LoggedPost()
         if(!Login.status)
             return setLogged(false)
-        if(err)
-            console.log(err)
         }
         fetch()
-    },[LoggedPost,err])
-
+    },[LoggedPost])
+        if(err)
+            console.log(err)
     return (
   <>
     {!Logged && <Navigate to="/login" />}
@@ -49,7 +67,7 @@ export default function Dashboard({children,active})
         <span className={active=="reports" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/reports")}}>Reports</span>
         <span className={active=="invoices" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/invoices")}}>Invoices</span>
         <span className={active=="clients" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"}onClick={()=>{navigate("/clients")}}>Clients</span>
-        <span className={active=="stocks" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer" } onClick={()=>{navigate("/stocks")}}>Stocks</span>
+        <span className={active=="stock" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer" } onClick={()=>{navigate("/stock")}}>Stocks</span>
         <span className={active=="payments" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/payments")}}>Payments</span>
       </aside>
 
@@ -57,13 +75,13 @@ export default function Dashboard({children,active})
         <span className={active=="reports" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/reports")}}>Reports</span>
         <span className={active=="invoices" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/invoices")}}>Invoices</span>
         <span className={active=="clients" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"}onClick={()=>{navigate("/clients")}}>Clients</span>
-        <span className={active=="stocks" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer" } onClick={()=>{navigate("/stocks")}}>Stocks</span>
+        <span className={active=="stock" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer" } onClick={()=>{navigate("/stock")}}>Stocks</span>
         <span className={active=="payments" ?"bg-black text-white rounded-3xl p-3 cursor-pointer":"hover:bg-black hover:text-white rounded-3xl p-3 cursor-pointer"} onClick={()=>{navigate("/payments")}}>Payments</span>
       </aside>
 
       {/* Page Content */}
       <main className={Menu?"hidden p-6 overflow-y-auto":"flex-1 p-6 overflow-y-auto"}>
-       {children}
+       <Outlet />
       </main>
 
     </div>

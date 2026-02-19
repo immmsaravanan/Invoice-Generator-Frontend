@@ -1,9 +1,15 @@
-import useFetch from "../../hooks/useFetch";
-import { useState } from "react";
+import usePost from "../../hooks/usePost";
+import useGet from "../../hooks/useGet";
+import { useEffect, useState } from "react";
 import ConfirmationBox from "../ConfirmationBox";
-export default function ClientAddAdress(props)
+import { useNavigate, useParams } from "react-router-dom";
+export default function ClientAddAdress()
 {
-const [response,err] = useFetch("/api/client/address/add")
+const navigate = useNavigate()
+const {client_gstin} =useParams()
+const [ClientResponse,Clienterr] = useGet(`/api/client/get/${client_gstin}`)
+const [ClientData,setClientData] = useState("")
+const [response,err] = usePost("/api/client/address/add")
 const [Confirmation,setConfirmation] = useState(false)
 const [ConfirmationBoxFunction,setConfirmationBoxFunction] = useState(()=>{})
 const [Address1,SetAddress1] = useState("")
@@ -12,14 +18,34 @@ const [Address3,SetAddress3] = useState("")
 const [State,setState] = useState("")
 const [Code,setCode] = useState("")
 const [Message,setMessage] = useState()
+
+if(Clienterr)
+        console.log(Clienterr)
+//Client Data set Use Effect
+useEffect(()=>{
+        async function fetch(){
+        const data = await ClientResponse();
+        if(data)
+        {
+                const client = data.client
+                setClientData(data?.data)
+                SetAddress1(client?.address_line1 || "")
+                SetAddress2(client?.address_line2 || "")
+                SetAddress3(client?.address_line3 || "")
+                setState(client?.state || "")
+                setCode(client?.state_code || "")
+        }
+        }
+fetch()
+},[ClientResponse])
 function ChangeHandler(e,setState)
 {
     const value = e.target.value
     setState(value)
 }
 async function HandleSubmit() {
-                const ClientGSTIN = props.client_gstin
-                const Data = {GSTIN: ClientGSTIN, AddressLine1: Address1, AddressLine2: Address2, AddressLine3: Address3, state: State, code: Code }
+
+                const Data = {GSTIN: client_gstin, AddressLine1: Address1, AddressLine2: Address2, AddressLine3: Address3, state: State, code: Code }
                 const result = await response(Data)
                 if (err) {
                         console.log(err)
@@ -37,15 +63,14 @@ async function HandleSubmit() {
                     console.log(result.err)
                 if(result.status)
                 {
-                        props.visible(false)
-                        props.setView(false)
                         setConfirmation(false)
+                        navigate(`/client/view/address/${client_gstin}`)
                 } 
             }
 return(
     <>
      {Confirmation && <ConfirmationBox message={"Are you sure you want to edit this?"} execute={ConfirmationBoxFunction} setHide={setConfirmation}/>}
-
+      <button className="cursor-pointer" onClick={()=>navigate(`/client/view/address/${ClientData.client_gstin}`)}><img src="/icons/back_arrow.png" className="h-10 w-10" /></button>
     <br />
     <div className="bg-gray-200 h-180 w-full p-10 rounded-3xl">
                                                         <form onSubmit={(e) =>
@@ -70,7 +95,7 @@ return(
                                                         <br />
                                                         {Message && <div className="text-lg text-red-600">{Message}</div>}
                                                         <button className="bg-blue-600 text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-blue-500 hover:scale-110 ease-in-out hover:duration-300" type="submit">Add</button>
-                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300" onClick={()=>{props.visible(false);props.setView(false)}}>Cancel</button>
+                                                        <button className="bg-black text-white rounded-3xl p-2 w-full laptop:w-5/15 transform transition hover:bg-gray-700 mt-4 laptop:ml-5 hover:scale-110 ease-in-out hover:duration-300" onClick={()=>{navigate(`/client/view/address/${client_gstin}`)}}>Cancel</button>
                                                 </form>
                                         </div>
     </>

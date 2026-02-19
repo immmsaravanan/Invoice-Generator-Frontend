@@ -1,6 +1,6 @@
 import { useState,useCallback } from "react";
 
-export default  function useFetch(url)
+export default  function usePost(url)
 {
 const [Err,setErr]= useState()
 const get =useCallback(async(body)=>
