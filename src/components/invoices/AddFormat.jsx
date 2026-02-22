@@ -102,7 +102,7 @@ export default function AddFormat()
         <input type="file" className="file:bg-blue-600 file:rounded-3xl file:p-5 mt-5 file:text-white file:font-bold hover:file:bg-blue-800 file:cursor-pointer font-bold file:block" {...register("igst_file",{required:true})}/>
         <br />
         <button className="bg-blue-600 hover:bg-blue-800 w-full mt-20 rounded-3xl h-15 mobile:mt-4 tablet:mt-10 text-white font-bold tablet:w-1/4 tablet:ml-4 cursor-pointer p-3 hover:scale-110 ease-in-out hover:duration-300" type="submit">Submit</button>
-        <button className="bg-black hover:bg-gray-700 tablet:ml-10 w-full mt-20 rounded-3xl h-15 mobile:mt-4 tablet:mt-10 text-white font-bold tablet:w-1/4 tablet:ml-4 cursor-pointer p-3 hover:scale-110 ease-in-out hover:duration-300" type="button" onClick={()=>navigate('/invoices')}>Cancel</button>
+        <button className="bg-black hover:bg-gray-700 w-full mt-20 rounded-3xl h-15 mobile:mt-4 tablet:mt-10 text-white font-bold tablet:w-1/4 tablet:ml-4 cursor-pointer p-3 hover:scale-110 ease-in-out hover:duration-300" type="button" onClick={()=>navigate('/invoices')}>Cancel</button>
         
         </form>
 
