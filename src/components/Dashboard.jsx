@@ -3,14 +3,23 @@ import useFetch from "../hooks/usePost"
 import { Navigate,useNavigate,useLocation,Outlet } from "react-router-dom"
 import { BiUser } from "react-icons/bi"
 import { BiMenu } from "react-icons/bi"
+import useDelete from "../hooks/useDelete"
 
 export default function Dashboard()
 {
+    //Declarations
     const url = useLocation();
     const navigate = useNavigate()
     const [Menu,setMenu]= useState()
     const [Logged,setLogged]= useState(true)
     const [LoggedPost,err]= useFetch("/api/loggedin")
+    const [Logout,LogoutErr] = useDelete("/api/logout")
+    const [ClickProfile,setClickProfile] = useState(false)
+    const [LogoutStatus,setLogoutStatus] = useState(false)
+
+    //Logout error log
+    if(LogoutErr)
+      console.log(LogoutErr)
 
     //Find The Active Page
     function FindActive(url)
@@ -20,11 +29,11 @@ export default function Dashboard()
         return "clients"
       else if(PathName.startsWith("/stock"))
         return "stock"
-      else if(PathName.startsWith("/invoices") || PathName.startsWith("/invoices"))
+      else if(PathName.startsWith("/invoices") || PathName.startsWith("/invoice"))
         return "invoices"
-      else if(PathName.startsWith("/reports") || PathName.startsWith("/reports"))
+      else if(PathName.startsWith("/reports") || PathName.startsWith("/report"))
         return "reports"
-      else if(PathName.startsWith("/payments") || PathName.startsWith("/payments"))
+      else if(PathName.startsWith("/payments") || PathName.startsWith("/payment"))
         return "payments"
     }
     //active status
@@ -38,7 +47,7 @@ export default function Dashboard()
             return setLogged(false)
         }
         fetch()
-    },[LoggedPost])
+    },[LoggedPost,LogoutStatus])
         if(err)
             console.log(err)
     return (
@@ -52,12 +61,16 @@ export default function Dashboard()
 
         <BiMenu size={22} onClick={()=>setMenu(!Menu)}/>
       </span>
-      <span className="cursor-pointer transform transition hover:scale-110">
+      <span className="cursor-pointer transform transition hover:scale-110" onClick={()=>setClickProfile(!ClickProfile)}>
 
         <BiUser size={22} />
       </span>
+      {ClickProfile && <div className="bg-black h-30 w-50 rounded-3xl absolute top-20 right-4 text-white p-5">
+        <ul className="justify-center">
+          <li className="hover:bg-gray-300 rounded-3xl hover:text-black  p-2 cursor-pointer font-bold text-center" onClick={async()=>{const result =await Logout({}); if(result){setClickProfile(false);setLogoutStatus(true)}}}>Logout</li>
+        </ul>
+      </div>}
       </div>
-
 
     {/* Main layout */}
     <div className="flex h-screen">

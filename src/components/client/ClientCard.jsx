@@ -15,7 +15,7 @@ const navigate = useNavigate()
 <button className="bg-green-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-green-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Bills</button>
 <button className="bg-violet-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-violet-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5">Make Invoice</button>
 <button className="bg-cyan-400 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-cyan-500 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>{navigate(`/client/edit/${props.gstin}`)}}>Edit</button>
-<button className="bg-amber-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-amber-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>{}}>Add Address</button>
+<button className="bg-amber-500 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-amber-600 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>navigate(`/client/add/address/${props.gstin}`)}>Add Address</button>
 <button className="bg-red-600 text-white text-xl rounded-3xl p-2 w-40 transform transition hover:bg-red-700 hover:scale-110 ease-in-out hover:duration-300 mr-3 mt-5" onClick={()=>props.deleteclient(props.name,{client_gstin:props.gstin})}>Delete</button> 
 </div>
 

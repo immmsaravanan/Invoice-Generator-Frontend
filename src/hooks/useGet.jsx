@@ -8,8 +8,8 @@ const post = useCallback(async()=>
 let res;
 try{
      res = await fetch("http://localhost:3000"+url,{
-    method:'GET',
-    credentials: "include"
+     method:'GET',
+     credentials: "include"
    
 })
 
